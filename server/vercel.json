@@ -8,7 +8,9 @@
           {
             "src": "build/**",
             "use": "@vercel/static"
-          }],
+
+          },{ "src": "public/assets/**", "use": "@now/static" }
+        ],
     "routes": [
        
       { "src": "/auth/login", "dest": "index.js" },
