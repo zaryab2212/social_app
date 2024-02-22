@@ -7,18 +7,8 @@ const JWT_SECRET = "KDFJKDJFKDJ";
 
 exports.registerUser = async (req, res) => {
   try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      picturePath,
-      friends,
-      location,
-      accupation,
-      viewedProfile,
-      impressions,
-    } = req.body;
+    const { email, password } = req.body;
+    console.log(req.body);
     const salt = 10;
 
     const user = await User.findOne({ email });
@@ -37,16 +27,11 @@ exports.registerUser = async (req, res) => {
       });
     }
     const newUser = await User.create({
-      firstName,
-      lastName,
-      email,
+      ...req.body,
       password: hashedPassword,
-      picturePath,
-      friends,
-      location,
-      accupation,
-      viewedProfile: Math.floor(Math.random() * 10000),
+      viewedProfile: Math.floor(Math.random() * 100000),
       impressions: Math.floor(Math.random() * 10000),
+      occupation: req.body.accupation,
     });
     await newUser.save();
     res.status(201).json({

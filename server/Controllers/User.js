@@ -57,14 +57,22 @@ exports.getUserFriends = async (req, res) => {
 exports.addOrRemoveFriend = async (req, res) => {
   try {
     const { id, friendId } = req.params;
-    console.log(id, "frind", friendId);
 
     const friend = await User.findById(friendId);
     const user = await User.findById(id);
 
+    if (user._id.toString() === friend._id.toString()) {
+      return res.status(400).send("You cannot add yourself as a friend");
+    }
+
     if (user.friends.includes(friendId)) {
-      user.friends.filter((id) => id !== friendId);
-      friend.friends.filter((id) => id !== id);
+      let ind = user.friends.indexOf(friendId);
+      user.friends.splice(ind, 1);
+      // user.friends.pull(friendId);
+
+      // friend.friends.pull(id);
+      let ind2 = friend.friends.indexOf(id);
+      friend.friends.splice(ind2, 1);
     } else {
       user.friends.push(friendId);
       friend.friends.push(id);
@@ -74,24 +82,51 @@ exports.addOrRemoveFriend = async (req, res) => {
     await friend.save();
 
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById({ _id: id }))
-    );
-    // console.log(friends);
-
-    const formatedFriends = friends.map(
-      ({ firstName, lastName, picturePath, accupation, location, _id }) => {
-        firstName, lastName, picturePath, accupation, location, _id;
-      }
+      user.friends.map((id) => User.findById(id))
     );
 
-    res.status(200).json({
-      friends,
-    });
+    res.status(200).json({ friends });
   } catch (err) {
-    res.status(404).json({
+    res.status(500).json({
       error: err.message,
       success: false,
       message: "Unable to add or delete the user",
     });
   }
 };
+
+//       let rmvusr = user.friends.filter((id) => id !== friendId);
+//       let rmvfrnd = friend.friends.filter((id) => id !== id);
+
+//       await rmvusr.save();
+//       await rmvfrnd.save();
+//     } else {
+//       let rmvusr = user.friends.push(friendId);
+//       let rmvfrnd = friend.friends.push(id);
+
+//       await rmvusr.save();
+//       await rmvfrnd.save();
+//     }
+
+//     const friends = await Promise.all(
+//       user.friends.map((id) => User.findById({ _id: id }))
+//     );
+//     // console.log(friends);
+
+//     // const formatedFriends = friends.map(
+//     //   ({ firstName, lastName, picturePath, accupation, location, _id }) => {
+//     //     firstName, lastName, picturePath, accupation, location, _id;
+//     //   }
+//     // );
+
+//     res.status(200).json({
+//       friends,
+//     });
+//   } catch (err) {
+//     res.status(404).json({
+//       error: err.message,
+//       success: false,
+//       message: "Unable to add or delete the user",
+//     });
+//   }
+// };

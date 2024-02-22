@@ -3,7 +3,9 @@ const JWT_SECRET = "KDFJKDJFKDJ";
 
 exports.verifyToken = async (req, res, next) => {
   try {
-    let token = req.header("Authorziation");
+    let token = req.header("Authorization");
+    // console.log(token);
+
     if (!token) {
       return res.status(403).json({
         success: false,

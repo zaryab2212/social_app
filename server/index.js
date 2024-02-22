@@ -15,11 +15,12 @@ const { createPost } = require("./Controllers/Post");
 //Middleware
 app.use(express.json());
 app.use(cors());
-app.use(morgan());
+// app.use(morgan());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
-
+app.use(express.static(path.join(__dirname, "/build")));
+//app.use(express.static(path.resolve(__dirname, "build")));
 //Multer File Storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -34,9 +35,9 @@ const upload = multer({ storage });
 // Routes
 app.post("/auth/register", upload.single("picture"), registerUser);
 app.post("/post/create", upload.single("picture"), createPost);
-app.use("/auth/", authRouter);
-app.use("/user/", UserRouter);
-app.use("/post/", PostRouter);
+app.use("/auth", authRouter);
+app.use("/user", UserRouter);
+app.use("/post", PostRouter);
 
 // Data base connection
 connection();

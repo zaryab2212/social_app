@@ -5,9 +5,7 @@ const mongoose = require("mongoose");
 exports.createPost = async (req, res) => {
   try {
     const { picturePath, description, userId } = req.body;
-    console.log(req.body);
     const user = await User.findById(userId);
-    console.log(user);
 
     const newPost = await Post.create({
       userId: userId,
@@ -17,10 +15,7 @@ exports.createPost = async (req, res) => {
       location: user.location,
       userpicturePath: user.picturePath,
       description: description,
-      likes: {},
-      comments: [],
     });
-    console.log(newPost);
 
     const MyNewPost = await newPost.save();
 
@@ -81,12 +76,75 @@ exports.likePosts = async (req, res) => {
 
     const post = await Post.findById(id);
 
-    const isLiked = post.likes.get(userId);
+    const isLiked = post?.likes?.includes(userId);
 
     if (isLiked) {
-      post.likes.delete(userId);
+      post.likes.pull(userId);
     } else {
-      post.likes.set(userId, true);
+      post?.likes?.push(userId);
+    }
+
+    const updatePost = await Post.findByIdAndUpdate(
+      id,
+      { likes: post.likes },
+      { new: true }
+    );
+
+    res.status(200).json({
+      updatePost,
+      success: true,
+      message: "Posts Updated",
+    });
+  } catch (err) {
+    res.status(404).json({
+      error: err.message,
+      success: false,
+      message: "Unabel to get all posts",
+    });
+  }
+};
+exports.AddComment = async (req, res) => {
+  try {
+    const { pay } = req.body;
+    const { comment } = pay;
+    const userId = req.user.id;
+    const { id } = req.params;
+    if (!comment) {
+      return res
+        .status(400)
+        .json({ status: false, message: "comment could not be Empty" });
+    }
+    console.log(userId);
+    const user = await User.findById(userId);
+    const postData = await Post.findById(id);
+    if (!postData) {
+      return res
+        .status(400)
+        .json({ status: false, message: "Posst not found" });
+    }
+    if (!user) {
+      return res.status(400).json({ status: false, message: "user Not found" });
+    }
+
+    postData.comments.push({
+      postId: id,
+      comment,
+      user,
+      id: Date.now() * Math.random(10),
+    });
+
+    postData.save();
+
+    return res.status(201).json({ postData });
+
+    const post = await Post.findById(id);
+
+    const isLiked = post?.likes?.includes(userId);
+
+    if (isLiked) {
+      post.likes.pull(userId);
+    } else {
+      post?.likes?.push(userId);
     }
 
     const updatePost = await Post.findByIdAndUpdate(
