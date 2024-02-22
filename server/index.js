@@ -19,7 +19,7 @@ app.use(cors());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
-// app.use(express.static(path.join(__dirname, "/build")));
+// app.use(express.static(path.join(__dirname, "public/assets")));
 app.use(express.static(path.resolve(__dirname, "build")));
 //Multer File Storage
 const storage = multer.diskStorage({
