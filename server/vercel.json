@@ -21,7 +21,7 @@
             { "src": "/user/(.*)", "dest": "index.js" },
         
            
-            { "src": "/post/register", "dest": "index.js" },
+            { "src": "/post/create", "dest": "index.js" },
             { "src": "/post/(.*)/posts", "dest": "index.js" },
             { "src": "/post/(.*)/like", "dest": "index.js" },
             { "src": "/post/(.*)/comments", "dest": "index.js" },
@@ -33,7 +33,7 @@
 
              
             { "src": "/", "dest": "index.js" }, 
-        
+          
             { "src": "/", "dest": "build/index.html" },
             { "src": "/(.+)", "dest": "build/$1" }
           ]
