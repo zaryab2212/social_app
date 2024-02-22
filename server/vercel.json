@@ -1,5 +1,4 @@
 {
-    "version": 2,
     
         "builds": [
           {
@@ -11,9 +10,24 @@
             "use": "@vercel/static"
           }],
     "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "index.js"
-      }
-    ]
+       
+            { "src": "/auth", "dest": "index.js" },
+            { "src": "/auth/login", "dest": "index.js" },
+            { "src": "/auth/register", "dest": "index.js" },
+        
+            { "src": "/auth/(.*)", "dest": "index.js" },
+            { "src": "/user/(.*)/friends", "dest": "index.js" },
+            { "src": "/user/(.*)/friendId", "dest": "index.js" },
+            { "src": "/user/(.*)", "dest": "index.js" },
+        
+            { "src": "/post/create", "dest": "index.js" },
+            { "src": "/post/(.*)/posts", "dest": "index.js" },
+            { "src": "/post/(.*)/like", "dest": "index.js" },
+            { "src": "/post/(.*)/comments", "dest": "index.js" },
+            { "src": "/post", "dest": "index.js" },
+        
+            { "src": "/", "dest": "build/index.html" },
+            { "src": "/(.+)", "dest": "build/$1" }
+          ]
+    
   }
