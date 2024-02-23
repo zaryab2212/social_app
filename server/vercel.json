@@ -9,7 +9,10 @@
             "src": "build/**",
             "use": "@vercel/static"
 
-          },{ "src": "public/assets/**", "use": "@vercel/static" }
+          },
+          { 
+          "src": "public/assets/**", 
+          "use": "@vercel/static" }
         ],
     "routes": [
        
