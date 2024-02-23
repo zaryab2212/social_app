@@ -18,9 +18,10 @@ app.use(cors());
 // app.use(morgan());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+// app.use("/assets", express.static(__dirname, +"assets"));
 // app.use(express.static(path.join(__dirname, "public/assets")));
 app.use(express.static(path.resolve(__dirname, "build")));
+app.use("/assets", express.static(path.resolve(__dirname, "public/assets")));
 //Multer File Storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
