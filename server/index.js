@@ -25,7 +25,7 @@ app.use(express.static(path.resolve(__dirname, "build")));
 //Multer File Storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "/assets"));
+    cb(null, path.join(__dirname, "public/assets"));
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
