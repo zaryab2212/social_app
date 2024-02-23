@@ -19,8 +19,6 @@ exports.createPost = async (req, res) => {
 
     const MyNewPost = await newPost.save();
 
-    const post = await Post.find();
-
     res.status(200).json({
       MyNewPost,
       success: true,

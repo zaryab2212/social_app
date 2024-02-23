@@ -9,7 +9,7 @@
             "src": "build/**",
             "use": "@vercel/static"
 
-          },{ "src": "public/assets/**", "use": "@now/static" }
+          },{ "src": "public/assets/**", "use": "@vercel/static" }
         ],
     "routes": [
        
@@ -23,7 +23,7 @@
             { "src": "/user/(.*)", "dest": "index.js" },
          
            
-            { "src": "/post/create", "dest":"index.js" },
+            { "src": "/post/create/", "dest":"index.js" },
             { "src": "/post/(.*)/posts", "dest": "index.js" },
             { "src": "/post/(.*)/like", "dest": "index.js" },
             { "src": "/post/(.*)/comments", "dest": "index.js" },
