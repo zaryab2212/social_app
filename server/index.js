@@ -11,6 +11,13 @@ const authRouter = require("./Routes/Auth");
 const UserRouter = require("./Routes/User");
 const PostRouter = require("./Routes/Post");
 const { createPost } = require("./Controllers/Post");
+const cloudinary = require("cloudinary").v2;
+
+// cloudinary.config({
+//   cloud_name: "dvv4ffhvi",
+//   api_key: "467479789366527",
+//   api_secret: "omveynTqndXu9lAWONOuSfthJU8",
+// });
 
 //Middleware
 app.use(express.json());
