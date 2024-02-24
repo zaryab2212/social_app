@@ -66,7 +66,7 @@ exports.createPost = async (req, res) => {
 };
 exports.getFeedPosts = async (req, res) => {
   try {
-    const post = await Post.find();
+    const post = await Post.find().sort(-1);
     res.status(200).json({
       post,
       success: true,
@@ -84,7 +84,7 @@ exports.getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const post = await Post.find({ userId });
+    const post = await Post.find({ userId }).sort(-1);
     res.status(200).json({
       post,
       success: true,
