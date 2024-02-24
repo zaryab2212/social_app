@@ -13,19 +13,20 @@ const PostRouter = require("./Routes/Post");
 const { createPost } = require("./Controllers/Post");
 const { uploadSingle } = require("./Middlewares/multer");
 const upload = require("./Middlewares/multer");
-const cloudinary = require("cloudinary").v2;
-
-// cloudinary.config({
-//   cloud_name: "dvv4ffhvi",
-//   api_key: "467479789366527",
-//   api_secret: "omveynTqndXu9lAWONOuSfthJU8",
-// });
 
 //Middleware
 app.use(express.json());
 app.use(cors());
 // app.use(morgan());
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "https://*.cloudinary.com"],
+    },
+  })
+);
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use("/assets", express.static(__dirname + "/public/assets"));
 // app.use(express.static(path.join(__dirname, "public/assets")));

@@ -2,14 +2,16 @@ const mongoose = require("mongoose");
 const { User } = require("../Models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { cloudinaryUri } = require("../Middlewares/cloudinary");
 
 const JWT_SECRET = "KDFJKDJFKDJ";
 
 exports.registerUser = async (req, res) => {
   try {
+    console.log(req.file);
     const { email, password } = req.body;
-    console.log(req.body);
     const salt = 10;
+    const result = await cloudinaryUri(req.file);
 
     const user = await User.findOne({ email });
     if (user) {
@@ -32,7 +34,10 @@ exports.registerUser = async (req, res) => {
       viewedProfile: Math.floor(Math.random() * 100000),
       impressions: Math.floor(Math.random() * 10000),
       occupation: req.body.accupation,
+      picturePath: result.url,
     });
+
+    console.log(newUser);
     await newUser.save();
     res.status(201).json({
       newUser,

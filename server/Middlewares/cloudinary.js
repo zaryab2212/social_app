@@ -9,9 +9,17 @@ cloudinary.config({
 
 exports.cloudinaryUri = async (file) => {
   try {
-    console.log(file.path);
-    const res = await cloudinary.uploader.upload(file.path);
-    fs.unlinkSync(file.path); // Delete the temporary file
+    console.log(file);
+    const base64Data = file.buffer.toString("base64");
+
+    // Upload base64 data to Cloudinary
+    const res = await cloudinary.uploader.upload(
+      `data:${file.mimetype};base64,${base64Data}`,
+      {
+        resource_type: "auto", // Let Cloudinary determine the resource type
+      }
+    );
+
     return res;
   } catch (error) {
     console.log("cloud UPoad Error", error.message);
