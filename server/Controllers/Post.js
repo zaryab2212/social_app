@@ -1,23 +1,55 @@
+const { Image } = require("../Models/Image");
 const { Post } = require("../Models/Post");
 const { User } = require("../Models/User");
 const mongoose = require("mongoose");
+// const cloudinary = require("cloudinary").v2;
+
+const { cloudinaryUri } = require("../Middlewares/cloudinary");
+
+// cloudinary.config({
+//   cloud_name: "dvv4ffhvi",
+//   api_key: "467479789366527",
+//   api_secret: "omveynTqndXu9lAWONOuSfthJU8",
+// });
 
 exports.createPost = async (req, res) => {
   try {
-    const { picturePath, description, userId } = req.body;
+    const results = await cloudinaryUri(req.file);
+    console.log(results);
+
+    // const uploadFile = async (file) => {
+    //   const nameArr = file.originalname.split(".");
+    //   const ext = nameArr[nameArr.length - 1];
+    //   const name = nameArr.slice(0, nameArr.length - 1) + Date.now();
+
+    //   const savedImg = await Image.create({
+    //     imagename: name + ext,
+    //     imagePath: "kjfkdj",
+    //     data: file.buffer,
+    //     contentType: file.mimetype,
+    //   });
+
+    //   return await savedImg.save();
+    // };
+
+    // const result = await uploadFile(req.file);
+    // console.log(result);
+
+    const { description, userId } = req.body;
     const user = await User.findById(userId);
 
     const newPost = await Post.create({
       userId: userId,
       firstName: user.firstName,
       lastName: user.lastName,
-      picturePath,
+      picturePath: results.url,
       location: user.location,
       userpicturePath: user.picturePath,
       description: description,
     });
 
     const MyNewPost = await newPost.save();
+    console.log(MyNewPost);
 
     res.status(200).json({
       MyNewPost,

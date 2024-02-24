@@ -11,6 +11,8 @@ const authRouter = require("./Routes/Auth");
 const UserRouter = require("./Routes/User");
 const PostRouter = require("./Routes/Post");
 const { createPost } = require("./Controllers/Post");
+const { uploadSingle } = require("./Middlewares/multer");
+const upload = require("./Middlewares/multer");
 const cloudinary = require("cloudinary").v2;
 
 // cloudinary.config({
@@ -30,19 +32,20 @@ app.use("/assets", express.static(__dirname + "/public/assets"));
 app.use(express.static(path.resolve(__dirname, "build")));
 // app.use("/assets", express.static(path.resolve(__dirname, "public/assets")));
 //Multer File Storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "public/assets"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-const upload = multer({ storage });
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, path.join(__dirname, "public/assets"));
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.originalname);
+//   },
+// });
+// const storage = multer.memoryStorage()
+// const upload = multer({ storage });
 
 // Routes
-app.post("/auth/register/", upload.single("picture"), registerUser);
-app.post("/post/create/", upload.single("picture"), createPost);
+app.post("/auth/register/", upload.single("file"), registerUser);
+app.post("/post/create/", upload.single("file"), createPost);
 app.use("/auth", authRouter);
 app.use("/user", UserRouter);
 app.use("/post", PostRouter);
