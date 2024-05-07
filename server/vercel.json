@@ -39,6 +39,7 @@
              
             { "src": "/", "dest": "index.js" }, 
 
+            { "src": "/login", "dest": "build/index.html" },
             { "src": "/", "dest": "build/index.html" },
             { "src": "/(.+)", "dest": "build/$1" }
           ]
